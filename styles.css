@@ -1,0 +1,702 @@
+:root {
+    /* 頁面整體背景：冷藍深色，做整體底色 */
+    --bg-color: #1D3557;
+    /* 卡片內容區背景：淡藍白，讓內容層次清楚 */
+    --card-bg: #F5F9FC;
+    /* 主視覺色：Cool Steel，應用在標題與強調元件 */
+    --primary-color: #91AEC1;
+    /* 輔助色：稍淺的藍灰，作細節或柔和區塊 */
+    --secondary-color: #BFD7EA;
+    /* 強調點／小裝飾色：淡藍白，偏柔和 */
+    --accent-color: #DDEAF5;
+    /* 深層底色：較深的冷藍 */
+    --deep-color: #1D3557;
+    /* 主要文字色：深藍 / #003EF1，讓行程文字清晰可讀 */
+    --text-main: #003EF1;
+    /* 次要文字色：深藍灰，降低強度 */
+    --text-muted: #395E7A;
+    /* 日期區塊背景：Pale Sky，標示日期的區域 */
+    --date-block: #BFD7EA;
+    /* 時間標籤背景：深海藍，讓時間區塊有區隔 */
+    --time-block: #1D3557;
+    /* 時間標籤文字：淡藍白 */
+    --time-text: #F5F9FC;
+    /* 陰影：整體卡片與區塊的微陰影 */
+    --shadow: 0 10px 24px rgba(18, 50, 70, 0.15);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    /* 全頁背景：使用冷藍深色 */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg-color);
+    /* 全頁主要文字色：#003EF1 */
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+.app-header {
+    /* 標題區塊使用京都夜景，淡色遮罩讓標題保持清楚 */
+    background:
+        linear-gradient(rgba(230, 239, 247, 0.48), rgba(230, 239, 247, 0.48)),
+        url("kyoto-night.webp") center 20% / cover no-repeat;
+    /* 標題文字：深藍色，與背景形成良好對比 */
+    color: #003EF1;
+    padding: 24px 20px 20px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.app-header h1 {
+    font-size: clamp(2.7rem, 5vw, 4.5rem);
+    line-height: 1.1;
+    position: relative;
+    height: 1.1em;
+}
+
+.app-header h1 img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(100%, 676px);
+    height: auto;
+    transform: translate(-50%, calc(-45% + 0.11em));
+    pointer-events: none;
+}
+
+.subtitle {
+    font-size: 0.9rem;
+    opacity: 0.92;
+    margin-top: 6px;
+    letter-spacing: 0.08em;
+}
+
+.install-button {
+    margin-top: 12px;
+    padding: 8px 16px;
+    border: 1px solid rgba(29, 53, 87, 0.22);
+    border-radius: 999px;
+    background: rgba(245, 249, 252, 0.92);
+    color: var(--deep-color);
+    font: inherit;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.install-button:hover {
+    background: #fff;
+}
+
+.install-button:focus-visible {
+    outline: 3px solid var(--deep-color);
+    outline-offset: 3px;
+}
+
+.itinerary-container {
+    width: min(100% - 32px, 960px);
+    margin: 24px auto;
+    padding: 0 0 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.date-group {
+    /* 每日日期區塊：Pale Sky */
+    position: relative;
+    width: 100%;
+    min-height: 200px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    padding-left: 0;
+}
+
+.date-header {
+    /* 日期標題列：同樣使用 Pale Sky */
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    min-height: 200px;
+    padding: 18px 52px 18px 16px;
+    background: transparent;
+    border-bottom: none;
+    /* 日期文字：#003EF1 */
+    color: #003EF1;
+}
+
+.date-group.photo-date-card {
+    min-height: 200px;
+    background-image: url('S__23445508.jpg');
+    background-size: cover;
+    background-position: 5% 10%;
+    background-repeat: no-repeat;
+}
+
+.date-group.photo-date-card:not(.open) {
+    height: 200px;
+}
+
+.date-group.photo-date-card .date-header {
+    height: 200px;
+    min-height: 200px;
+    background: transparent;
+    border-bottom: none;
+    padding-left: 0;
+    padding-bottom: 0;
+    padding-right: 0;
+    margin-bottom: 0;
+}
+
+.date-group.photo-date-card .day-meta {
+    margin-left: 5%;
+}
+
+.date-group.photo-date-card .day-events {
+    margin-top: 0;
+}
+
+.date-group.photo-date-card .date-text,
+.date-group.photo-date-card .day-index {
+    color: #ffffff;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.75), 0 1px 2px rgba(0, 0, 0, 0.9);
+}
+
+.day-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.date-text {
+    /* 日期字體：#003EF1 */
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #003EF1;
+}
+
+.day-index {
+    /* 第幾天的輔助字：淡化版 #003EF1 */
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    color: rgba(0, 62, 241, 0.7);
+    text-transform: uppercase;
+}
+
+.expand-indicator {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    min-width: 42px;
+    padding: 7px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(17, 24, 39, 0.08);
+    color: #1D2B3A;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(17, 24, 39, 0.08);
+    cursor: pointer;
+}
+
+.date-group {
+    cursor: pointer;
+}
+
+.day-events {
+    /* 當日活動列表區塊：與日期區塊同色，保持統一背景 */
+    position: relative;
+    overflow: hidden;
+    transition: max-height 0.28s ease;
+    padding: 0 14px 14px 18px;
+    background: #BFD7EA;
+}
+
+.date-group:not(.open) .day-events {
+    padding-bottom: 0;
+}
+
+.day-events::before {
+    content: "";
+    position: absolute;
+    left: 10px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.day-events .itinerary-card {
+    /* 每一筆行程卡：白色半透明背景，讓內容有清楚區隔 */
+    position: relative;
+    margin-top: 12px;
+    background: rgba(255, 255, 255, 0.82);
+    border-radius: 12px;
+    padding: 14px 58px 14px 18px;
+    box-shadow: none;
+    border: 1px solid rgba(58, 43, 37, 0.08);
+    border-left: 1px solid rgba(58, 43, 37, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.day-events .itinerary-card::before {
+    content: "";
+    position: absolute;
+    left: -12px;
+    top: 20px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(15, 79, 117, 0.12);
+}
+
+.day-events .itinerary-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(43, 33, 24, 0.05);
+}
+
+.time-badge {
+    /* 時間標籤：深海藍背景 + 淡藍白字 */
+    display: inline-block;
+    background: #1D3557;
+    color: #F5F9FC;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+    letter-spacing: 0.04em;
+}
+
+.activity-title {
+    /* 行程標題：#003EF1 */
+    font-size: 1.12rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: #003EF1;
+}
+
+.activity-note {
+    /* 行程說明：#003EF1 */
+    font-size: 0.92rem;
+    color: #003EF1;
+    opacity: 0.75;
+}
+
+.day-info-card {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 18px 20px;
+    border: 1px solid rgba(29, 53, 87, 0.08);
+}
+
+.flight-ticket {
+    position: relative;
+    background: #f3ebdf;
+    border: 1px solid rgba(37, 30, 22, 0.6);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    padding: 0;
+}
+
+.flight-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px 10px;
+    background: #e7dfd1;
+    border-bottom: 1px solid rgba(37, 30, 22, 0.18);
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1b1b1b;
+}
+
+.flight-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    font-size: 1.1rem;
+    line-height: 1;
+}
+
+.flight-body {
+    display: flex;
+    align-items: stretch;
+    gap: 18px;
+    padding: 16px 18px 18px;
+    background: #f7f3ed;
+}
+
+.flight-route {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex: 1;
+    min-width: 0;
+}
+
+.route-block {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.route-label {
+    font-size: 0.72rem;
+    color: #4a4a4a;
+    letter-spacing: 0.04em;
+}
+
+.route-city {
+    font-size: clamp(1.5rem, 2vw, 2rem);
+    line-height: 1.1;
+    font-weight: 700;
+    color: #1d1d1d;
+}
+
+.route-airport,
+.route-terminal {
+    font-size: 0.72rem;
+    color: #525252;
+}
+
+.route-time {
+    margin-top: 8px;
+    font-size: 1.55rem;
+    line-height: 1.1;
+    font-weight: 700;
+    color: #1d1d1d;
+}
+
+.route-arrow-sign {
+    font-size: 1.8rem;
+    color: #202020;
+    font-weight: 700;
+    transform: translateY(-4px);
+}
+
+.flight-meta {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 170px;
+    padding-left: 14px;
+    border-left: 1px dashed rgba(0, 0, 0, 0.25);
+}
+
+.meta-item {
+    display: grid;
+    grid-template-columns: 10px 1fr auto;
+    gap: 8px;
+    align-items: center;
+    font-size: 0.75rem;
+    color: #3a3a3a;
+}
+
+.meta-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #2a2a2a;
+    display: inline-block;
+}
+
+.meta-item strong {
+    font-size: 0.78rem;
+    color: #1b1b1b;
+}
+
+.airplane-mark {
+    position: absolute;
+    right: 16px;
+    bottom: 8px;
+    font-size: 2.4rem;
+    line-height: 1;
+    color: rgba(20, 58, 90, 0.7);
+    transform: rotate(18deg);
+}
+
+.stay-ticket {
+    position: relative;
+    background: #f3ebdf;
+    border: 1px solid rgba(37, 30, 22, 0.6);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    padding: 0;
+}
+
+.stay-header {
+    background: #e7dfd1;
+}
+
+.stay-body {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 18px 18px 20px;
+    background: #f7f3ed;
+}
+
+.stay-city {
+    font-size: 1.18rem;
+    font-weight: 800;
+    color: #1d1d1d;
+}
+
+.stay-info-box {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.34);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.stay-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1d1d1d;
+}
+
+.stay-address {
+    font-size: 0.8rem;
+    color: #4e4e4e;
+}
+
+.stay-detail-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.stay-detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.detail-label {
+    font-size: 0.7rem;
+    color: #4a4a4a;
+}
+
+.detail-value {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #202020;
+}
+
+.map-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 52px;
+    height: 28px;
+    padding: 0 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.52);
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    color: #1d1d1d;
+    text-decoration: none;
+    font-size: 0.74rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* Keep long itinerary notes comfortable to scan on every screen size. */
+.activity-note {
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+}
+
+.itinerary-card {
+    min-width: 0;
+}
+
+@media (max-width: 700px) {
+    .app-header {
+        position: relative;
+        padding: 18px 16px 16px;
+    }
+
+    .app-header h1 {
+        font-size: clamp(2rem, 9vw, 3.2rem);
+    }
+
+    .app-header h1 img {
+        width: min(100%, 560px);
+    }
+
+    .subtitle {
+        font-size: 0.95rem;
+    }
+
+    .itinerary-container {
+        width: min(100% - 24px, 560px);
+        margin: 16px auto;
+        gap: 14px;
+        padding-bottom: 24px;
+    }
+
+    .date-group,
+    .date-group.photo-date-card:not(.open) {
+        min-height: 150px;
+        height: 150px;
+        border-radius: 14px;
+    }
+
+    .date-header,
+    .date-group.photo-date-card .date-header {
+        min-height: 150px;
+        height: 150px;
+        padding: 16px 62px 16px 16px;
+    }
+
+    .date-group.photo-date-card .day-meta {
+        margin-left: 4%;
+    }
+
+    .date-text {
+        font-size: 1.2rem;
+    }
+
+    .day-events {
+        padding-right: 10px;
+        padding-left: 16px;
+    }
+
+    .day-events .itinerary-card {
+        padding: 14px 16px;
+    }
+
+    .activity-title {
+        font-size: 1.08rem;
+        line-height: 1.5;
+    }
+
+    .activity-note {
+        font-size: 1rem;
+        line-height: 1.8;
+    }
+
+    .flight-body {
+        flex-direction: column;
+        gap: 14px;
+        padding: 14px;
+    }
+
+    .flight-route {
+        gap: 12px;
+    }
+
+    .route-city {
+        font-size: clamp(1.35rem, 6vw, 1.8rem);
+        overflow-wrap: anywhere;
+    }
+
+    .route-airport,
+    .route-terminal {
+        font-size: 0.78rem;
+        overflow-wrap: anywhere;
+    }
+
+    .route-time {
+        font-size: 1.35rem;
+    }
+
+    .flight-meta {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        min-width: 0;
+        padding: 12px 0 0;
+        border-left: 0;
+        border-top: 1px dashed rgba(0, 0, 0, 0.25);
+    }
+
+    .meta-item {
+        grid-template-columns: 8px auto minmax(0, 1fr);
+        gap: 6px;
+        font-size: 0.72rem;
+    }
+
+    .meta-item strong {
+        overflow-wrap: anywhere;
+    }
+
+    .airplane-mark {
+        right: 12px;
+        bottom: 10px;
+        font-size: 1.8rem;
+    }
+
+    .stay-body {
+        padding: 14px;
+    }
+
+    .stay-detail-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .stay-detail-item {
+        padding: 10px;
+        overflow-wrap: anywhere;
+    }
+}
+
+@media (max-width: 380px) {
+    .itinerary-container {
+        width: calc(100% - 16px);
+    }
+
+    .date-text {
+        font-size: 1.08rem;
+    }
+
+    .flight-route {
+        gap: 8px;
+    }
+
+    .route-arrow-sign {
+        font-size: 1.4rem;
+    }
+
+    .flight-meta {
+        grid-template-columns: 1fr;
+    }
+}

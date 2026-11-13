@@ -1,0 +1,27 @@
+{
+  "id": "./",
+  "name": "關西漫遊之旅｜2027 冬季行程表",
+  "short_name": "關西漫遊",
+  "description": "關西旅遊行程、航班與住宿資訊",
+  "lang": "zh-TW",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#1D3557",
+  "theme_color": "#1D3557",
+  "categories": ["travel"],
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
