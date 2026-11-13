@@ -134,7 +134,15 @@ body {
     min-height: 200px;
     padding: 18px 52px 18px 16px;
     background: transparent;
+    border: 0;
     border-bottom: none;
+    appearance: none;
+    -webkit-appearance: none;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
     /* 日期文字：#003EF1 */
     color: #003EF1;
 }

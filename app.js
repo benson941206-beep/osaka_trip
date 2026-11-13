@@ -334,7 +334,6 @@ function renderItinerary() {
         const dayCard = document.createElement('div');
         const isOpen = index === 0;
         dayCard.className = `date-group ${isOpen ? 'open' : ''}`;
-        dayCard.setAttribute('aria-expanded', String(isOpen));
 
         const dayImage = dayGroup.image || '';
 
@@ -343,14 +342,14 @@ function renderItinerary() {
         }
 
         dayCard.innerHTML = `
-            <div class="date-header" data-day-image="${dayImage}">
-                <div class="day-meta">
+            <button class="date-header" type="button" data-day-image="${dayImage}" aria-expanded="${isOpen}" aria-controls="day-events-${index}">
+                <span class="day-meta">
                     <span class="date-text">${formatDateLabel(dayGroup.date)}</span>
                     <span class="day-index">${dayGroup.dayLabel}</span>
-                </div>
-                <div class="expand-indicator">${isOpen ? '收起' : '展開'}</div>
-            </div>
-            <div class="day-events">
+                </span>
+                <span class="expand-indicator">${isOpen ? '收起' : '展開'}</span>
+            </button>
+            <div class="day-events" id="day-events-${index}">
                 ${dayGroup.items.map(item => `
                     <div class="itinerary-card">
                         <div class="time-badge">${item.time}</div>
@@ -382,9 +381,9 @@ function renderItinerary() {
 
         const dayEvents = dayCard.querySelector('.day-events');
 
-        dayCard.addEventListener('click', () => {
+        header.addEventListener('click', () => {
             const isExpanded = dayCard.classList.toggle('open');
-            dayCard.setAttribute('aria-expanded', String(isExpanded));
+            header.setAttribute('aria-expanded', String(isExpanded));
             dayEvents.style.maxHeight = isExpanded ? `${dayEvents.scrollHeight}px` : '0px';
             const indicator = dayCard.querySelector('.expand-indicator');
             if (indicator) {
