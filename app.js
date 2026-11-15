@@ -579,7 +579,43 @@ function renderItinerary() {
     })));
 }
 
-document.addEventListener('DOMContentLoaded', renderItinerary);
+function setupPageNavigation() {
+    const tabs = document.querySelectorAll('.page-tab');
+    const pageSubtitle = document.querySelector('.subtitle');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const selectedPageId = tab.dataset.page;
+
+            document.querySelectorAll('.page-panel').forEach(page => {
+                page.hidden = page.id !== selectedPageId;
+            });
+
+            tabs.forEach(pageTab => {
+                const isActive = pageTab === tab;
+                pageTab.classList.toggle('is-active', isActive);
+                if (isActive) {
+                    pageTab.setAttribute('aria-current', 'page');
+                } else {
+                    pageTab.removeAttribute('aria-current');
+                }
+            });
+
+            if (pageSubtitle) {
+                pageSubtitle.textContent = selectedPageId === 'food-page'
+                    ? '大阪・京都美食推薦'
+                    : '2027 冬季行程表';
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderItinerary();
+    setupPageNavigation();
+});
 
 const installButton = document.getElementById('install-app');
 let installPrompt = null;

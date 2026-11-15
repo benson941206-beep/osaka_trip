@@ -21,9 +21,94 @@
         <button class="install-button" id="install-app" type="button">安裝到主畫面</button>
     </header>
 
-    <main class="itinerary-container" id="itinerary-list">
-        <!-- 行程卡片將由 JavaScript 動態生成 -->
+    <main class="page-panel" id="itinerary-page">
+        <div class="itinerary-container" id="itinerary-list">
+            <!-- 行程卡片將由 JavaScript 動態生成 -->
+        </div>
     </main>
+
+    <section class="food-page page-panel" id="food-page" aria-labelledby="food-title" hidden>
+        <div class="food-content">
+            <header class="food-intro">
+                <p class="food-eyebrow">KANSAI FOOD GUIDE</p>
+                <h2 id="food-title">關西推薦美食</h2>
+                <p>從大阪的熱鬧街頭到京都的茶香，挑幾道經典美味，為旅程補充元氣。</p>
+            </header>
+
+            <div class="food-list">
+                <article class="food-card">
+                    <div class="food-icon" aria-hidden="true">🐙</div>
+                    <div class="food-card-content">
+                        <p class="food-location">大阪・難波</p>
+                        <h3>章魚燒｜たこ焼道楽 わなか</h3>
+                        <p>外皮微酥、裡面柔軟燙口，現點現吃最能感受大阪街頭小吃的魅力。</p>
+                        <a class="food-map-link" href="https://www.google.com/maps/search/?api=1&amp;query=%E3%81%9F%E3%81%93%E7%84%BC%E9%81%93%E6%A5%BD%E3%82%8F%E3%81%AA%E3%81%8B%20%E9%9B%A3%E6%B3%A2" target="_blank" rel="noopener noreferrer">查看地圖 <span aria-hidden="true">↗</span></a>
+                    </div>
+                </article>
+
+                <article class="food-card">
+                    <div class="food-icon" aria-hidden="true">🥞</div>
+                    <div class="food-card-content">
+                        <p class="food-location">大阪・道頓堀</p>
+                        <h3>大阪燒｜美津の</h3>
+                        <p>道頓堀的老字號大阪燒店，招牌山藥燒口感鬆軟，適合安排一頓熱呼呼的晚餐。</p>
+                        <a class="food-map-link" href="https://www.google.com/maps/search/?api=1&amp;query=%E7%BE%8E%E6%B4%A5%E3%81%AE%20%E9%81%93%E9%A0%93%E5%A0%80" target="_blank" rel="noopener noreferrer">查看地圖 <span aria-hidden="true">↗</span></a>
+                    </div>
+                </article>
+
+                <article class="food-card">
+                    <div class="food-icon" aria-hidden="true">🍢</div>
+                    <div class="food-card-content">
+                        <p class="food-location">大阪・新世界</p>
+                        <h3>串炸｜串かつだるま</h3>
+                        <p>金黃酥脆的各式串炸是大阪代表美食之一，搭配高麗菜一起享用；醬汁禮儀依店內規定即可。</p>
+                        <a class="food-map-link" href="https://www.google.com/maps/search/?api=1&amp;query=%E4%B8%B2%E3%81%8B%E3%81%A4%E3%81%A0%E3%82%8B%E3%81%BE%20%E6%96%B0%E4%B8%96%E7%95%8C" target="_blank" rel="noopener noreferrer">查看地圖 <span aria-hidden="true">↗</span></a>
+                    </div>
+                </article>
+
+                <article class="food-card">
+                    <div class="food-icon" aria-hidden="true">🍜</div>
+                    <div class="food-card-content">
+                        <p class="food-location">京都・四條</p>
+                        <h3>京都拉麵｜麺屋 猪一 本店</h3>
+                        <p>以風味細緻的高湯與和風配料聞名，逛完市區後很適合來一碗暖心拉麵。</p>
+                        <a class="food-map-link" href="https://www.google.com/maps/search/?api=1&amp;query=%E9%BA%BA%E5%B1%8B%20%E7%8C%AA%E4%B8%80%20%E6%9C%AC%E5%BA%97%20%E4%BA%AC%E9%83%BD" target="_blank" rel="noopener noreferrer">查看地圖 <span aria-hidden="true">↗</span></a>
+                    </div>
+                </article>
+                <article class="food-card">
+                    <div class="food-icon" aria-hidden="true">🍜</div>
+                    <div class="food-card-content">
+                        <p class="food-location">京都・四條</p>
+                        <h3>京都拉麵｜麺屋 猪一 本店</h3>
+                        <p>以風味細緻的高湯與和風配料聞名，逛完市區後很適合來一碗暖心拉麵。</p>
+                        <a class="food-map-link" href="https://www.google.com/maps/search/?api=1&amp;query=%E9%BA%BA%E5%B1%8B%20%E7%8C%AA%E4%B8%80%20%E6%9C%AC%E5%BA%97%20%E4%BA%AC%E9%83%BD" target="_blank" rel="noopener noreferrer">查看地圖 <span aria-hidden="true">↗</span></a>
+                    </div>
+                </article>
+
+                <article class="food-card">
+                    <div class="food-icon" aria-hidden="true">🍵</div>
+                    <div class="food-card-content">
+                        <p class="food-location">京都・京都車站</p>
+                        <h3>抹茶甜點｜中村藤吉 京都店</h3>
+                        <p>想吃抹茶甜點或喝茶時的好選擇，京都車站店交通方便，也能順道安排伴手禮。</p>
+                        <a class="food-map-link" href="https://www.google.com/maps/search/?api=1&amp;query=%E4%B8%AD%E6%9D%91%E8%97%A4%E5%90%89%20%E4%BA%AC%E9%83%BD%E9%A7%85%E5%BA%97" target="_blank" rel="noopener noreferrer">查看地圖 <span aria-hidden="true">↗</span></a>
+                    </div>
+                </article>
+            </div>
+            <p class="food-note">店家營業時間、分店資訊與候位狀況可能變動，出發前請先查看地圖確認。</p>
+        </div>
+    </section>
+
+    <nav class="page-navigation" aria-label="主要頁面">
+        <button class="page-tab is-active" type="button" data-page="itinerary-page" aria-current="page">
+            <span class="page-tab-icon" aria-hidden="true">🗓️</span>
+            <span>旅遊行程</span>
+        </button>
+        <button class="page-tab" type="button" data-page="food-page">
+            <span class="page-tab-icon" aria-hidden="true">🍜</span>
+            <span>推薦美食</span>
+        </button>
+    </nav>
 
     <script src="app.js"></script>
 </body>
