@@ -1,3 +1,4 @@
+// 個別行程可設定 mapUrl: "Google 地圖分享連結"，未設定時不顯示地圖按鈕。
 // 模擬行程資料：依日期分組
 const itineraryData = [
     {
@@ -5,9 +6,9 @@ const itineraryData = [
         dayLabel: "第1天",
         image: "S__23445508.jpg",
         items: [
-            { time: "19:30", title: "抵達關西國際機場", note: "準備出關並領取 JR Pass" },
-            { time: "21:00", title: "搭乘 HARUKA 抵達京都", note: "轉乘計程車前往飯店 Check-in" },
-            { time: "21:30", title: "飯店周圍覓食", note: "尋找附近的拉麵或居酒屋，早點休息" }
+            { time: "19:30", title: "抵達關西國際機場",mapUrl: "https://maps.google.com/?q=關西國際機場", note: "準備出關並領取 JR Pass" },
+            { time: "21:00", title: "搭乘 HARUKA 抵達京都",mapUrl: "https://maps.app.goo.gl/Xk5orMkUyPeZoVuS9", note: "轉乘計程車前往飯店 Check-in" },
+            { time: "21:30", title: "飯店周圍覓食",mapUrl:"https://maps.app.goo.gl/qdaBxzLx2WKMHYCSA", note: "尋找附近的拉麵或居酒屋，早點休息" }
         ]
     },
     {
@@ -16,13 +17,9 @@ const itineraryData = [
         image: "S__23445507.jpg",
         items: [
             {
-                time: "06:00",
-                title: "清水寺",
-                note: "交通｜兩人從烏丸站搭計程車至「清水道」，約 10 分鐘，車資約 ¥1,200–¥1,500（平攤約每人 ¥600–¥750）。清晨公車班次少，搭車可省下步行時間。"
-            },
-            {
-                time: "08:15",
+                time: "08:30",
                 title: "前往金閣寺",
+                mapUrl:"https://maps.app.goo.gl/om3fsdmmBEjM2qhc9",
                 note: "交通｜從「清水道」搭市營 207 公車至「四條烏丸」，轉乘地鐵烏丸線至「北大路站」，再搭市營 204 或 205 公車至「金閣寺道」。約 1 小時，每人約 ¥720。"
             },
             {
@@ -31,25 +28,40 @@ const itineraryData = [
                 note: "趁開門不久入場，沿參觀動線欣賞金閣與池中倒影，預計停留約 40–50 分鐘。"
             },
             {
-                time: "10:15",
-                title: "前往京都車站・午餐",
-                note: "交通｜從金閣寺搭公車回「北大路站」，轉乘地鐵烏丸線直達「京都車站」，約 30 分鐘。建議在地下街 Porta 或伊勢丹百貨周邊用餐。"
+                time: "10:00",
+                title: "清水寺",
+                mapUrl:"https://maps.app.goo.gl/RHHse6yVzB7aePgTA",
+                note: "交通｜兩人從烏丸站搭計程車至「清水道」，約 10 分鐘，車資約 ¥1,200–¥1,500。清晨公車班次少，搭車可省下步行時間。"
             },
             {
-                time: "12:30",
+                time: "11:00",
                 title: "伏見稻荷大社",
+                mapUrl:"https://maps.app.goo.gl/MAwCLSKUkfBDub5y6",
                 note: "交通｜從京都車站搭 JR 奈良線普通車至「稻荷站」，約 5 分鐘，每人約 ¥150。出站正對面就是大社入口；走訪千本鳥居、拍照後折返，保留體力。"
+            },
+            {
+                time: "12:00",
+                title: "京都車站・午餐",
+                mapUrl:"https://maps.app.goo.gl/VAcgTkyKLYmhYcg99",
+                note: "交通｜從金閣寺搭公車回「北大路站」，轉乘地鐵烏丸線直達「京都車站」，約 30 分鐘。建議在地下街 Porta 或伊勢丹百貨周邊用餐。"
             },
             {
                 time: "14:00",
                 title: "前往奈良",
+                mapUrl:"https://maps.app.goo.gl/W6i1RnUmrdrVdnmd6",
                 note: "交通｜從 JR 稻荷站搭 JR 奈良線南下前往「JR 奈良站」，約 50–60 分鐘，每人約 ¥680。稻荷站僅普通車停靠；可搭普通車至「宇治站」再轉乘大和路快速，實際班次與月台請依車站資訊確認。"
             },
             {
                 time: "15:00",
                 title: "奈良・東大寺與餵鹿",
                 note: "抵達 JR 奈良站後，從 2 號月台搭市區黃色公車前往「東大寺大佛殿」。參觀大佛後，再到周邊悠閒餵鹿。"
-            }
+            },
+            {   
+                time: "17:00",
+                title: "前往宇治 下午茶",
+                mapUrl:"https://maps.app.goo.gl/aQJUS9uygDmp6GWMA",
+                note: "交通｜ (來不及的話就取消下次再去)"
+            },
         ]
     },
     {
@@ -85,7 +97,7 @@ const itineraryData = [
             {
                 time: "約 19:00",
                 title: "大阪下車",
-                note: "依你選擇的方案於大阪下車；實際抵達時間與下車地點請以訂單及行前通知為準。以上時間為規劃估算，可能因交通與當日安排調整。"
+                note: "於大阪下車；實際抵達時間與下車地點請以訂單及行前通知為準。以上時間為規劃估算，可能因交通與當日安排調整。"
             }
         ]
     },
@@ -314,7 +326,113 @@ function renderItinerary() {
     const container = document.getElementById('itinerary-list');
     container.innerHTML = '';
 
-    container.appendChild(createFlightTicketCard({
+    const header = document.querySelector('.app-header');
+    const stickyHeaderHeight = header && getComputedStyle(header).position === 'sticky'
+        ? header.getBoundingClientRect().height
+        : 0;
+    const collapseTimers = new WeakMap();
+    const visibleItemsByDay = new WeakMap();
+    const intersectionRatiosByItem = new WeakMap();
+    const intersectionRatiosByCard = new WeakMap();
+    const revealObserver = typeof IntersectionObserver === 'undefined' ? null : new IntersectionObserver(entries => {
+        const affectedDays = new Set();
+        entries.forEach(entry => {
+            const card = entry.target;
+            const visibleRatio = entry.isIntersecting ? entry.intersectionRatio : 0;
+            if (card.classList.contains('itinerary-card')) {
+                intersectionRatiosByItem.set(card, visibleRatio);
+                const dayCard = card.closest('.date-group');
+                const visibleItems = dayCard && visibleItemsByDay.get(dayCard);
+                if (visibleItems) {
+                    if (visibleRatio > 0) {
+                        visibleItems.add(card);
+                    } else {
+                        visibleItems.delete(card);
+                    }
+                    affectedDays.add(dayCard);
+                }
+                return;
+            }
+
+            intersectionRatiosByCard.set(card, visibleRatio);
+            if (card.classList.contains('date-group')) {
+                affectedDays.add(card);
+                return;
+            }
+
+            card.style.setProperty('--scroll-opacity', String(visibleRatio));
+            card.classList.toggle('is-visible', visibleRatio > 0);
+        });
+
+        affectedDays.forEach(dayCard => {
+            const groupRatio = intersectionRatiosByCard.get(dayCard) || 0;
+            const visibleItems = visibleItemsByDay.get(dayCard);
+            const hasVisibleItem = visibleItems?.size > 0;
+            const isOnScreen = groupRatio > 0 || hasVisibleItem;
+            let visibleRatio = groupRatio;
+            if (dayCard.classList.contains('open') && visibleItems?.size > 1) {
+                visibleRatio = 1;
+            } else if (dayCard.classList.contains('open') && visibleItems?.size === 1) {
+                visibleRatio = intersectionRatiosByItem.get(visibleItems.values().next().value) || 0;
+            }
+            dayCard.style.setProperty('--scroll-opacity', String(visibleRatio));
+            dayCard.classList.toggle('is-visible', isOnScreen);
+
+            const pendingCollapse = collapseTimers.get(dayCard);
+            if (isOnScreen && pendingCollapse !== undefined) {
+                clearTimeout(pendingCollapse);
+                collapseTimers.delete(dayCard);
+            } else if (!isOnScreen && dayCard.classList.contains('open') && pendingCollapse === undefined) {
+                collapseTimers.set(dayCard, window.setTimeout(() => {
+                    if (!dayCard.classList.contains('open') || dayCard.classList.contains('is-visible')) {
+                        collapseTimers.delete(dayCard);
+                        return;
+                    }
+
+                    dayCard.classList.remove('open');
+                    dayCard.querySelector('.date-header').setAttribute('aria-expanded', 'false');
+                    dayCard.querySelector('.day-events').style.maxHeight = '0px';
+                    const indicator = dayCard.querySelector('.expand-indicator');
+                    if (indicator) {
+                        indicator.textContent = '展開';
+                    }
+                    stopObservingDayItems(dayCard);
+                    collapseTimers.delete(dayCard);
+                }, 220));
+            }
+        });
+    }, {
+        threshold: Array.from({ length: 101 }, (_, index) => index / 100),
+        rootMargin: `-${stickyHeaderHeight}px 0px 0px 0px`
+    });
+    const observeDayItems = dayCard => {
+        const visibleItems = new Set();
+        visibleItemsByDay.set(dayCard, visibleItems);
+        dayCard.querySelectorAll('.itinerary-card').forEach(item => {
+            const bounds = item.getBoundingClientRect();
+            if (bounds.bottom > stickyHeaderHeight && bounds.top < window.innerHeight) {
+                visibleItems.add(item);
+            }
+            if (revealObserver) {
+                revealObserver.observe(item);
+            }
+        });
+    };
+    const stopObservingDayItems = dayCard => {
+        if (revealObserver) {
+            dayCard.querySelectorAll('.itinerary-card').forEach(item => revealObserver.unobserve(item));
+        }
+        visibleItemsByDay.delete(dayCard);
+    };
+    const observeOnScreen = card => {
+        if (revealObserver) {
+            card.classList.add('scroll-reveal');
+            revealObserver.observe(card);
+        }
+        return card;
+    };
+
+    container.appendChild(observeOnScreen(createFlightTicketCard({
         title: '去程航班',
         fromCity: '台北',
         toCity: '大阪',
@@ -328,12 +446,14 @@ function renderItinerary() {
         flightNo: 'AK176',
         cabin: '1件托運',
         baggage: '25KG'
-    }));
+    })));
 
     itineraryData.forEach((dayGroup, index) => {
         const dayCard = document.createElement('div');
         const isOpen = index === 0;
         dayCard.className = `date-group ${isOpen ? 'open' : ''}`;
+
+        observeOnScreen(dayCard);
 
         const dayImage = dayGroup.image || '';
 
@@ -352,8 +472,13 @@ function renderItinerary() {
             <div class="day-events" id="day-events-${index}">
                 ${dayGroup.items.map(item => `
                     <div class="itinerary-card">
-                        <div class="time-badge">${item.time}</div>
-                        <h3 class="activity-title">${item.title}</h3>
+                        <div class="itinerary-card-heading">
+                            <div class="itinerary-card-main">
+                                <div class="time-badge">${item.time}</div>
+                                <h3 class="activity-title">${item.title}</h3>
+                            </div>
+                            ${item.mapUrl ? `<a class="map-button itinerary-map-button" href="${item.mapUrl}" target="_blank" rel="noopener noreferrer" aria-label="在 Google 地圖開啟：${item.title}">地圖</a>` : ''}
+                        </div>
                         <p class="activity-note">${item.note}</p>
                     </div>
                 `).join('')}
@@ -383,8 +508,20 @@ function renderItinerary() {
 
         header.addEventListener('click', () => {
             const isExpanded = dayCard.classList.toggle('open');
+            const pendingCollapse = collapseTimers.get(dayCard);
+            if (pendingCollapse !== undefined) {
+                clearTimeout(pendingCollapse);
+                collapseTimers.delete(dayCard);
+            }
             header.setAttribute('aria-expanded', String(isExpanded));
             dayEvents.style.maxHeight = isExpanded ? `${dayEvents.scrollHeight}px` : '0px';
+            if (isExpanded) {
+                observeDayItems(dayCard);
+                dayCard.style.setProperty('--scroll-opacity', '1');
+            } else {
+                stopObservingDayItems(dayCard);
+                dayCard.style.setProperty('--scroll-opacity', String(intersectionRatiosByCard.get(dayCard) || 0));
+            }
             const indicator = dayCard.querySelector('.expand-indicator');
             if (indicator) {
                 indicator.textContent = isExpanded ? '收起' : '展開';
@@ -392,7 +529,7 @@ function renderItinerary() {
         });
 
         if (index === 0) {
-            container.appendChild(createStayTicketCard({
+            container.appendChild(observeOnScreen(createStayTicketCard({
                 title: '住宿資訊',
                 city: '京都住宿',
                 hotel: 'MYSTAYS 京都四條酒店',
@@ -401,14 +538,18 @@ function renderItinerary() {
                 checkIn: '1/14 15:00',
                 checkOut: '1/16 11:00',
                 mapUrl: 'https://www.google.com/maps/place/MYSTAYS+%E4%BA%AC%E9%83%BD%E5%9B%9B%E6%A2%9D%E9%85%92%E5%BA%97/@35.0054538,135.7538227,15.7z/data=!4m11!3m10!1s0x6001089cdfc353ed:0xa89feabb2b4dd5fb!5m4!1s2027-01-14!2i2!4m1!1i2!8m2!3d35.0039263!4d135.7546146!16s%2Fg%2F1tgw9t9g?authuser=0&entry=ttu&g_ep=EgoyMDI2MTEwMy4wIKXMDSoASAFQAw%3D%3D'
-            }));
+            })));
         }
 
         container.appendChild(dayCard);
         dayEvents.style.maxHeight = isOpen ? `${dayEvents.scrollHeight}px` : '0px';
+        if (isOpen) {
+            observeDayItems(dayCard);
+            dayCard.style.setProperty('--scroll-opacity', '1');
+        }
 
         if (index === 2) {
-            container.appendChild(createStayTicketCard({
+            container.appendChild(observeOnScreen(createStayTicketCard({
                 title: '住宿資訊',
                 city: '大阪住宿',
                 hotel: '日興-通天閣 Nikko Tsutenkaku Hotel',
@@ -417,11 +558,11 @@ function renderItinerary() {
                 checkIn: '1/17 15:00',
                 checkOut: '1/20 11:00',
                 mapUrl: 'https://www.google.com/maps/place/Nikko+Tsutenkaku/@34.651008,135.5002397,18.02z/data=!3m1!5s0x6000e761bd54ec49:0x90dc48fc629e9d98!4m11!3m10!1s0x6000e76b85226a9b:0xfffb53c433bcb11!5m4!1s2027-01-14!2i2!4m1!1i2!8m2!3d34.6509753!4d135.5028671!16s%2Fg%2F11zfb9skqx?authuser=0&entry=ttu&g_ep=EgoyMDI2MTEwNC4wIKXMDSoASAFQAw%3D%3D'
-            }));
+            })));
         }
     });
 
-    container.appendChild(createFlightTicketCard({
+    container.appendChild(observeOnScreen(createFlightTicketCard({
         title: '回程航班',
         fromCity: '大阪',
         toCity: '台北',
@@ -435,7 +576,7 @@ function renderItinerary() {
         flightNo: 'AK177',
         cabin: '1件托運',
         baggage: '25KG'
-    }));
+    })));
 }
 
 document.addEventListener('DOMContentLoaded', renderItinerary);
