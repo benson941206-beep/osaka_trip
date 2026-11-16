@@ -56,12 +56,6 @@ const itineraryData = [
                 title: "奈良・東大寺與餵鹿",
                 note: "抵達 JR 奈良站後，從 2 號月台搭市區黃色公車前往「東大寺大佛殿」。參觀大佛後，再到周邊悠閒餵鹿。"
             },
-            {   
-                time: "17:00",
-                title: "前往宇治 下午茶",
-                mapUrl:"https://maps.app.goo.gl/aQJUS9uygDmp6GWMA",
-                note: "交通｜ (來不及的話就取消下次再去)"
-            },
         ]
     },
     {
