@@ -34,18 +34,24 @@
                 <p>從大阪的熱鬧街頭到京都的茶香，挑幾道經典美味，為旅程補充元氣。</p>
             </header>
 
+            <div class="food-search">
+                <label for="food-search-input">搜尋推薦美食</label>
+                <input id="food-search-input" type="search" placeholder="試試看：抹茶、和菓子、豬排、螃蟹" autocomplete="off">
+                <p id="food-search-status" class="food-search-status" role="status" aria-live="polite"></p>
+            </div>
+
             <div class="food-list">
-                <article class="food-card">
+                <article class="food-card" data-search="抹茶 綠茶 茶飲">
                     <div class="food-icon" aria-hidden="true">🍵</div>
                     <div class="food-card-content">
                         <p class="food-location">京都・清水寺</p>
                         <h3>雲ノ茶 清水三年坂店</h3>
-                        <p>造型吸睛、具話題性的雲朵慕斯蛋糕與精緻飲品。</p>
+                        <p>造型吸睛、具話題性的雲朵慕斯蛋糕，以及抹茶等精緻茶飲。</p>
                         <a class="food-map-link" href="https://maps.app.goo.gl/4x42CcyEq7BQuAXQ9" target="_blank" rel="noopener noreferrer">查看地圖 <span aria-hidden="true">↗</span></a>
                     </div>
                 </article>
 
-                <article class="food-card">
+                <article class="food-card" data-search="和菓子 日式甜點 糰子 串糰子 餅乾 燒菓子 日式點心">
                     <div class="food-icon" aria-hidden="true">🍡</div>
                     <div class="food-card-content">
                         <p class="food-location">京都・清水寺</p>
@@ -55,7 +61,7 @@
                     </div>
                 </article>
 
-                <article class="food-card">
+                <article class="food-card" data-search="仙貝 米果 米餅 日式零食 烤米餅 七味粉 鹹食">
                     <div class="food-icon" aria-hidden="true">🍢</div>
                     <div class="food-card-content">
                         <p class="food-location">京都・清水寺</p>
@@ -65,7 +71,7 @@
                     </div>
                 </article>
 
-                <article class="food-card">
+                <article class="food-card" data-search="咖啡 星巴克 咖啡廳 咖啡店 町家 榻榻米">
                     <div class="food-icon" aria-hidden="true">☕️</div>
                     <div class="food-card-content">
                         <p class="food-location">京都・清水寺</p>
@@ -74,7 +80,7 @@
                         <a class="food-map-link" href="https://maps.app.goo.gl/y2yRJ4V8Aw4qRQjK8" target="_blank" rel="noopener noreferrer">查看地圖 <span aria-hidden="true">↗</span></a>
                     </div>
                 </article>
-                <article class="food-card">
+                <article class="food-card" data-search="甘酒 酒粕 紅豆湯 年糕 麻糬 熱飲 暖身 日式甜品">
                     <div class="food-icon" aria-hidden="true">🍶</div>
                     <div class="food-card-content">
                         <p class="food-location">京都・伏見稻荷大社</p>
@@ -84,7 +90,7 @@
                     </div>
                 </article>
 
-                <article class="food-card">
+                <article class="food-card" data-search="ramen ラーメン 豚骨 醬油拉麵 叉燒 麵食">
                     <div class="food-icon" aria-hidden="true">🍜</div>
                     <div class="food-card-content">
                         <p class="food-location">京都・京都車站</p>
@@ -93,7 +99,7 @@
                         <a class="food-map-link" href="https://maps.app.goo.gl/uMD6Ni92h9G68vqV9" target="_blank" rel="noopener noreferrer">查看地圖 <span aria-hidden="true">↗</span></a>
                     </div>
                 </article>
-                <article class="food-card">
+                <article class="food-card" data-search="ramen ラーメン 黑拉麵 中華そば 炒飯 醬油拉麵 麵食">
                     <div class="food-icon" aria-hidden="true">🍜</div>
                     <div class="food-card-content">
                         <p class="food-location">京都・京都車站</p>
@@ -102,7 +108,7 @@
                         <a class="food-map-link" href="https://maps.app.goo.gl/tW6kdFsET8XNW2pFA" target="_blank" rel="noopener noreferrer">查看地圖 <span aria-hidden="true">↗</span></a>
                     </div>
                 </article>
-                <article class="food-card">
+                <article class="food-card" data-search="豬排 炸豬排 炸物 定食 日式套餐 芝麻 高麗菜">
                     <div class="food-icon" aria-hidden="true">🍚</div>
                     <div class="food-card-content">
                         <p class="food-location">京都・京都車站</p>
@@ -111,7 +117,7 @@
                         <a class="food-map-link" href="https://maps.app.goo.gl/mNyJjsXHhdB55NB48" target="_blank" rel="noopener noreferrer">查看地圖 <span aria-hidden="true">↗</span></a>
                     </div>
                 </article>
-                <article class="food-card">
+                <article class="food-card" data-search="義大利麵 義式 pasta 西餐 和風義大利麵">
                     <div class="food-icon" aria-hidden="true">🍝</div>
                     <div class="food-card-content">
                         <p class="food-location">京都・京都車站</p>
@@ -120,7 +126,7 @@
                         <a class="food-map-link" href="https://maps.app.goo.gl/LnyuqWALT5T2DmqBA" target="_blank" rel="noopener noreferrer">查看地圖 <span aria-hidden="true">↗</span></a>
                     </div>
                 </article>
-                <article class="food-card">
+                <article class="food-card" data-search="麻糬 艾草 紅豆 日式甜點 糯米 搗麻糬">
                     <div class="food-icon" aria-hidden="true">🫘</div>
                     <div class="food-card-content">
                         <p class="food-location">奈良・奈良公園</p>
@@ -129,7 +135,7 @@
                         <a class="food-map-link" href=https://maps.app.goo.gl/zf8tJ4dspw2ZW2t69" target="_blank" rel="noopener noreferrer">查看地圖 <span aria-hidden="true">↗</span></a>
                     </div>
                 </article>
-                <article class="food-card">
+                <article class="food-card" data-search="布丁 甜點 奶酪 卡士達 大和茶 酒味 伴手禮">
                     <div class="food-icon" aria-hidden="true">🍮</div>
                     <div class="food-card-content">
                         <p class="food-location">奈良・奈良公園</p>
@@ -138,7 +144,7 @@
                         <a class="food-map-link" href=https://maps.app.goo.gl/spceNsqeuaLbCeRb7" target="_blank" rel="noopener noreferrer">查看地圖 <span aria-hidden="true">↗</span></a>
                     </div>
                 </article>
-                <article class="food-card">
+                <article class="food-card" data-search="螃蟹 蟹 蟹料理 雪蟹 吃到飽 海鮮 日式料理">
                     <div class="food-icon" aria-hidden="true">🦀</div>
                     <div class="food-card-content">
                         <p class="food-location">大阪・道頓堀</p>
@@ -147,7 +153,7 @@
                         <a class="food-map-link" href=https://maps.app.goo.gl/FEyaJUYtvsgrDSpf6" target="_blank" rel="noopener noreferrer">查看地圖 <span aria-hidden="true">↗</span></a>
                     </div>
                 </article>
-                <article class="food-card">
+                <article class="food-card" data-search="螃蟹 蟹 蟹料理 雪蟹 帝王蟹 塔拉巴蟹 吃到飽 海鮮 飲放題">
                     <div class="food-icon" aria-hidden="true">🦀</div>
                     <div class="food-card-content">
                         <p class="food-location">大阪・梅田</p>
@@ -156,7 +162,7 @@
                         <a class="food-map-link" href=https://maps.app.goo.gl/ewMcZLEC76cUL6rX9" target="_blank" rel="noopener noreferrer">查看地圖 <span aria-hidden="true">↗</span></a>
                     </div>
                 </article>
-                <article class="food-card">
+                <article class="food-card" data-search="螃蟹 蟹 蟹料理 雪蟹 松葉蟹 帝王蟹 吃到飽 海鮮 和牛 壽喜燒 涮涮鍋 壽司">
                     <div class="food-icon" aria-hidden="true">🦀</div>
                     <div class="food-card-content">
                         <p class="food-location">大阪・難波</p>
@@ -166,7 +172,7 @@
                         <a class="food-map-link" href=https://maps.app.goo.gl/8WWbfBKXLnpkUqse7" target="_blank" rel="noopener noreferrer">查看地圖 <span aria-hidden="true">↗</span></a>
                     </div>
                 </article>
-                <article class="food-card">
+                <article class="food-card" data-search="螃蟹 蟹 蟹料理 雪蟹 鮪魚 龍蝦 海鮮 和牛 壽司 壽喜燒 吃到飽">
                     <div class="food-icon" aria-hidden="true">🦀</div>
                     <div class="food-card-content">
                         <p class="food-location">大阪・心齋橋</p>
@@ -175,7 +181,7 @@
                         <a class="food-map-link" href=https://maps.app.goo.gl/1UWcbAgKAE4dSYe48" target="_blank" rel="noopener noreferrer">查看地圖 <span aria-hidden="true">↗</span></a>
                     </div>
                 </article>
-                <article class="food-card">
+                <article class="food-card" data-search="螃蟹 蟹 蟹料理 雪蟹 帝王蟹 塔拉巴蟹 吃到飽 海鮮 飲放題">
                     <div class="food-icon" aria-hidden="true">🦀</div>
                     <div class="food-card-content">
                         <p class="food-location">大阪・梅田</p>
@@ -184,7 +190,7 @@
                         <a class="food-map-link" href=https://maps.app.goo.gl/ewMcZLEC76cUL6rX9" target="_blank" rel="noopener noreferrer">查看地圖 <span aria-hidden="true">↗</span></a>
                     </div>
                 </article>
-                <article class="food-card">
+                <article class="food-card" data-search="螃蟹 蟹 蟹料理 雪蟹 帝王蟹 塔拉巴蟹 吃到飽 海鮮 飲放題">
                     <div class="food-icon" aria-hidden="true">🦀</div>
                     <div class="food-card-content">
                         <p class="food-location">大阪・梅田</p>
@@ -200,6 +206,25 @@
         </div>
     </section>
 
+    <section class="food-page page-panel" id="draw-page" aria-labelledby="draw-title" hidden>
+        <div class="food-content">
+            <header class="food-intro">
+                <p class="food-eyebrow">FOOD DRAW</p>
+                <h2 id="draw-title">今天吃什麼？</h2>
+                <p>先在推薦美食勾選想吃的店，再從清單中抽出一間。</p>
+            </header>
+
+            <p id="draw-selection-count" class="draw-selection-count" role="status" aria-live="polite">目前選取 0 間</p>
+            <ul id="draw-selected-list" class="draw-selected-list"></ul>
+            <div class="draw-actions">
+                <button id="draw-food-button" type="button" disabled>抽一間來吃！</button>
+                <button id="clear-food-selection" type="button" disabled>清除選取</button>
+            </div>
+            <p id="draw-status" class="draw-status" role="status" aria-live="polite"></p>
+            <div id="draw-result" class="draw-result"></div>
+        </div>
+    </section>
+
     <nav class="page-navigation" aria-label="主要頁面">
         <button class="page-tab is-active" type="button" data-page="itinerary-page" aria-current="page">
             <span class="page-tab-icon" aria-hidden="true">🗓️</span>
@@ -208,6 +233,10 @@
         <button class="page-tab" type="button" data-page="food-page">
             <span class="page-tab-icon" aria-hidden="true">🍜</span>
             <span>推薦美食</span>
+        </button>
+        <button class="page-tab" type="button" data-page="draw-page">
+            <span class="page-tab-icon" aria-hidden="true">🎲</span>
+            <span>抽選吃什麼</span>
         </button>
     </nav>
 

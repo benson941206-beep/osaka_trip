@@ -598,7 +598,9 @@ function setupPageNavigation() {
             if (pageSubtitle) {
                 pageSubtitle.textContent = selectedPageId === 'food-page'
                     ? '大阪・京都美食推薦'
-                    : '2027 冬季行程表';
+                    : selectedPageId === 'draw-page'
+                        ? '從已勾選的推薦中抽一間'
+                        : '2027 冬季行程表';
             }
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -606,9 +608,111 @@ function setupPageNavigation() {
     });
 }
 
+function setupFoodSearch() {
+    const searchInput = document.getElementById('food-search-input');
+    const status = document.getElementById('food-search-status');
+    const cards = Array.from(document.querySelectorAll('.food-card'));
+
+    if (!searchInput || !status) {
+        return;
+    }
+
+    searchInput.addEventListener('input', () => {
+        const keyword = searchInput.value.trim().toLocaleLowerCase();
+        const searchTerms = keyword.includes('螃蟹')
+            ? [keyword, '蟹', 'かに', 'カニ', 'crab']
+            : [keyword];
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+            const cardText = `${card.textContent} ${card.dataset.search || ''}`.toLocaleLowerCase();
+            const matches = searchTerms.some(term => cardText.includes(term));
+            card.hidden = !matches;
+            if (matches) {
+                visibleCount += 1;
+            }
+        });
+
+        status.textContent = keyword
+            ? visibleCount
+                ? `找到 ${visibleCount} 間推薦`
+                : '找不到相關推薦，請試試其他關鍵字。'
+            : '';
+    });
+}
+
+function setupFoodPicker() {
+    const cards = Array.from(document.querySelectorAll('#food-page .food-card'));
+    const selectedCount = document.getElementById('draw-selection-count');
+    const selectedList = document.getElementById('draw-selected-list');
+    const drawButton = document.getElementById('draw-food-button');
+    const clearButton = document.getElementById('clear-food-selection');
+    const drawStatus = document.getElementById('draw-status');
+    const drawResult = document.getElementById('draw-result');
+
+    if (!selectedCount || !selectedList || !drawButton || !clearButton || !drawStatus || !drawResult) {
+        return;
+    }
+
+    const getSelectedCards = () => cards.filter(card => card.querySelector('.food-select input').checked);
+    const updateSelection = () => {
+        const selectedCards = getSelectedCards();
+        selectedCount.textContent = `目前選取 ${selectedCards.length} 間`;
+        drawButton.disabled = selectedCards.length === 0;
+        clearButton.disabled = selectedCards.length === 0;
+        selectedList.replaceChildren(...selectedCards.map(card => {
+            const item = document.createElement('li');
+            const title = card.querySelector('h3').textContent.trim();
+            const location = card.querySelector('.food-location').textContent.trim();
+            item.textContent = `${title}（${location}）`;
+            return item;
+        }));
+        drawStatus.textContent = '';
+        drawResult.replaceChildren();
+    };
+
+    cards.forEach((card, index) => {
+        const label = document.createElement('label');
+        label.className = 'food-select';
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.setAttribute('aria-label', `將「${card.querySelector('h3').textContent.trim()}」加入抽選`);
+        checkbox.id = `food-choice-${index}`;
+        checkbox.addEventListener('change', updateSelection);
+
+        const labelText = document.createElement('span');
+        labelText.textContent = '想吃';
+        label.append(checkbox, labelText);
+        card.append(label);
+    });
+
+    drawButton.addEventListener('click', () => {
+        const selectedCards = getSelectedCards();
+        if (selectedCards.length === 0) {
+            return;
+        }
+
+        const pickedCard = selectedCards[Math.floor(Math.random() * selectedCards.length)].cloneNode(true);
+        pickedCard.hidden = false;
+        pickedCard.querySelector('.food-select').remove();
+        drawResult.replaceChildren(pickedCard);
+        drawStatus.textContent = '抽選結果出爐！祝你用餐愉快。';
+    });
+
+    clearButton.addEventListener('click', () => {
+        cards.forEach(card => {
+            card.querySelector('.food-select input').checked = false;
+        });
+        updateSelection();
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     renderItinerary();
     setupPageNavigation();
+    setupFoodSearch();
+    setupFoodPicker();
 });
 
 const installButton = document.getElementById('install-app');

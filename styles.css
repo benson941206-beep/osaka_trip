@@ -148,6 +148,41 @@ body {
     font-size: 0.95rem;
 }
 
+.food-search {
+    margin-bottom: 16px;
+}
+
+.food-search label {
+    display: block;
+    margin-bottom: 6px;
+    color: #F5F9FC;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.food-search input {
+    width: 100%;
+    min-height: 48px;
+    padding: 10px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 12px;
+    background: var(--card-bg);
+    color: var(--deep-color);
+    font: inherit;
+}
+
+.food-search input:focus-visible {
+    outline: 3px solid var(--primary-color);
+    outline-offset: 3px;
+}
+
+.food-search-status {
+    min-height: 1.5em;
+    margin-top: 6px;
+    color: rgba(245, 249, 252, 0.82);
+    font-size: 0.86rem;
+}
+
 .food-list {
     display: grid;
     gap: 14px;
@@ -162,6 +197,35 @@ body {
     border-radius: 16px;
     background: var(--card-bg);
     box-shadow: var(--shadow);
+}
+
+.food-card[hidden] {
+    display: none;
+}
+
+.food-select {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 5px;
+    margin-left: auto;
+    padding: 6px 0 6px 4px;
+    color: var(--deep-color);
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.food-select input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--deep-color);
+    cursor: pointer;
+}
+
+.food-select input:focus-visible {
+    outline: 3px solid var(--primary-color);
+    outline-offset: 3px;
 }
 
 .food-icon {
@@ -226,6 +290,63 @@ body {
     font-size: 0.82rem;
 }
 
+.draw-selection-count,
+.draw-status {
+    color: rgba(245, 249, 252, 0.88);
+    font-size: 0.92rem;
+}
+
+.draw-selected-list {
+    display: grid;
+    gap: 6px;
+    margin: 12px 0 18px;
+    padding-left: 22px;
+    color: #F5F9FC;
+    font-size: 0.9rem;
+}
+
+.draw-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.draw-actions button {
+    min-height: 46px;
+    padding: 9px 16px;
+    border: 1px solid var(--secondary-color);
+    border-radius: 12px;
+    background: var(--card-bg);
+    color: var(--deep-color);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.draw-actions button:first-child {
+    border-color: var(--primary-color);
+    background: var(--primary-color);
+}
+
+.draw-actions button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.draw-actions button:focus-visible {
+    outline: 3px solid #fff;
+    outline-offset: 3px;
+}
+
+.draw-status {
+    min-height: 1.6em;
+    margin-top: 16px;
+}
+
+.draw-result:empty {
+    display: none;
+}
+
 .page-navigation {
     position: fixed;
     z-index: 200;
@@ -233,7 +354,7 @@ body {
     bottom: 0;
     left: 0;
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
     border-top: 1px solid rgba(29, 53, 87, 0.15);
     background: rgba(245, 249, 252, 0.97);
