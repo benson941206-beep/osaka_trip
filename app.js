@@ -177,7 +177,7 @@ const itineraryData = [
         items: [
             { time: "09:00", title: "最後一個早晨", note: "收拾行李與自由活動" },
             { time: "12:30", title: "午餐與返程準備", note: "提前整理退房與機場交通" },
-            { time: "16:00", title: "搭機返國", note: "準備前往機場並出發" }
+            { time: "18:30", title: "搭機返國", note: "準備前往機場並出發" }
         ]
     }
 ];
@@ -600,7 +600,9 @@ function setupPageNavigation() {
                     ? '大阪・京都美食推薦'
                     : selectedPageId === 'draw-page'
                         ? '從已勾選的推薦中抽一間'
-                        : '2027 冬季行程表';
+                        : selectedPageId === 'expenses-page'
+                            ? '旅遊支出與收入紀錄'
+                            : '2027 冬季行程表';
             }
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -774,6 +776,139 @@ function setupFoodPicker() {
         });
         updateSelection();
     });
+}
+
+const EXPENSE_STORAGE_KEY = 'osaka-trip-expenses';
+
+function getExpenses() {
+    try {
+        const expenses = JSON.parse(localStorage.getItem(EXPENSE_STORAGE_KEY) || '[]');
+        return Array.isArray(expenses) ? expenses : [];
+    } catch {
+        return [];
+    }
+}
+
+function saveExpenses(expenses) {
+    localStorage.setItem(EXPENSE_STORAGE_KEY, JSON.stringify(expenses));
+}
+
+function formatJapaneseYen(amount) {
+    return `¥${Number(amount).toLocaleString('ja-JP')}`;
+}
+
+function setupExpenses() {
+    const form = document.getElementById('expense-form');
+    const typeInput = document.getElementById('expense-type');
+    const amountInput = document.getElementById('expense-amount');
+    const dateInput = document.getElementById('expense-date');
+    const categoryInput = document.getElementById('expense-category');
+    const noteInput = document.getElementById('expense-note');
+    const status = document.getElementById('expense-status');
+    const list = document.getElementById('expense-list');
+    const clearButton = document.getElementById('clear-expenses-button');
+    const incomeOutput = document.getElementById('expense-income');
+    const expenseOutput = document.getElementById('expense-expense');
+    const balanceOutput = document.getElementById('expense-balance');
+
+    if (!form || !typeInput || !amountInput || !dateInput || !categoryInput ||
+        !noteInput || !status || !list || !clearButton ||
+        !incomeOutput || !expenseOutput || !balanceOutput) {
+        return;
+    }
+
+    const today = new Date();
+    const localDate = new Date(today.getTime() - today.getTimezoneOffset() * 60000)
+        .toISOString()
+        .slice(0, 10);
+    dateInput.value = localDate;
+
+    const renderExpenses = () => {
+        const expenses = getExpenses().sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+        let income = 0;
+        let expense = 0;
+
+        expenses.forEach(item => {
+            if (item.type === 'income') income += Number(item.amount);
+            else expense += Number(item.amount);
+        });
+
+        incomeOutput.textContent = formatJapaneseYen(income);
+        expenseOutput.textContent = formatJapaneseYen(expense);
+        balanceOutput.textContent = formatJapaneseYen(income - expense);
+        clearButton.disabled = expenses.length === 0;
+
+        list.replaceChildren(...expenses.map(item => {
+            const row = document.createElement('li');
+            row.className = `expense-item is-${item.type}`;
+
+            const main = document.createElement('div');
+            main.className = 'expense-item-main';
+
+            const category = document.createElement('strong');
+            category.textContent = item.category;
+
+            const meta = document.createElement('span');
+            meta.textContent = `${item.date}${item.note ? ` · ${item.note}` : ''}`;
+
+            main.append(category, meta);
+
+            const amount = document.createElement('strong');
+            amount.className = 'expense-item-amount';
+            amount.textContent = `${item.type === 'income' ? '+' : '-'}${formatJapaneseYen(item.amount)}`;
+
+            const remove = document.createElement('button');
+            remove.type = 'button';
+            remove.className = 'expense-remove';
+            remove.setAttribute('aria-label', `刪除${item.category}紀錄`);
+            remove.textContent = '刪除';
+            remove.addEventListener('click', () => {
+                saveExpenses(getExpenses().filter(record => record.id !== item.id));
+                renderExpenses();
+                status.textContent = '已刪除一筆紀錄。';
+            });
+
+            row.append(main, amount, remove);
+            return row;
+        }));
+    };
+
+    form.addEventListener('submit', event => {
+        event.preventDefault();
+        const amount = Number(amountInput.value);
+        if (!Number.isFinite(amount) || amount <= 0) {
+            status.textContent = '請輸入大於 0 的金額。';
+            amountInput.focus();
+            return;
+        }
+
+        const expenses = getExpenses();
+        expenses.push({
+            id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+            type: typeInput.value,
+            amount: Math.round(amount),
+            date: dateInput.value,
+            category: categoryInput.value,
+            note: noteInput.value.trim(),
+            createdAt: new Date().toISOString()
+        });
+        saveExpenses(expenses);
+
+        amountInput.value = '';
+        noteInput.value = '';
+        status.textContent = '紀錄已儲存在這支手機。';
+        renderExpenses();
+        amountInput.focus();
+    });
+
+    clearButton.addEventListener('click', () => {
+        if (!window.confirm('確定要清除全部旅遊記帳紀錄嗎？')) return;
+        saveExpenses([]);
+        renderExpenses();
+        status.textContent = '已清除全部紀錄。';
+    });
+
+    renderExpenses();
 }
 
 const CUSTOM_FOOD_STORAGE_KEY = 'osaka-trip-custom-foods';
@@ -983,6 +1118,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupFoodSearch();
     setupCustomFoods();
     setupFoodPicker();
+    setupExpenses();
 });
 
 const installButton = document.getElementById('install-app');
@@ -1030,6 +1166,34 @@ if ('serviceWorker' in navigator) {
         try {
             const registration = await navigator.serviceWorker.register('./service-worker.js');
             registration.update();
+
+            const refreshButton = document.getElementById('screen-refresh-button');
+            refreshButton?.addEventListener('click', async () => {
+                refreshButton.classList.add('is-refreshing');
+                refreshButton.disabled = true;
+
+                try {
+                    await registration.update();
+
+                    if (registration.waiting) {
+                        registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+                        return;
+                    }
+
+                    if ('caches' in window) {
+                        const cacheNames = await caches.keys();
+                        await Promise.all(
+                            cacheNames
+                                .filter(name => name.startsWith('kansai-itinerary-'))
+                                .map(name => caches.delete(name))
+                        );
+                    }
+                } catch (error) {
+                    console.error('重新整理更新失敗：', error);
+                }
+
+                window.location.reload();
+            });
 
             registration.addEventListener('updatefound', () => {
                 const newWorker = registration.installing;

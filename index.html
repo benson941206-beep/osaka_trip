@@ -15,6 +15,9 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <button id="screen-refresh-button" class="screen-refresh-button" type="button" aria-label="重新整理畫面" title="重新整理畫面">
+        <span aria-hidden="true">↻</span>
+    </button>
     <aside id="pwa-update-banner" class="pwa-update-banner" role="status" aria-live="polite" hidden>
         <span>已有新版本可更新</span>
         <button id="pwa-update-button" type="button">立即更新</button>
@@ -232,6 +235,74 @@
         </div>
     </section>
 
+    <section class="food-page page-panel" id="expenses-page" aria-labelledby="expenses-title" hidden>
+        <div class="food-content">
+            <header class="food-intro">
+                <p class="food-eyebrow">TRIP EXPENSES</p>
+                <h2 id="expenses-title">旅遊記帳</h2>
+                <p>紀錄每筆支出與收入，資料只保存在這支手機的瀏覽器。</p>
+            </header>
+
+            <div class="expense-summary" aria-label="記帳總覽">
+                <div>
+                    <span>收入</span>
+                    <strong id="expense-income">¥0</strong>
+                </div>
+                <div>
+                    <span>支出</span>
+                    <strong id="expense-expense">¥0</strong>
+                </div>
+                <div>
+                    <span>餘額</span>
+                    <strong id="expense-balance">¥0</strong>
+                </div>
+            </div>
+
+            <form id="expense-form" class="expense-form">
+                <div class="expense-form-grid">
+                    <label>
+                        類型
+                        <select id="expense-type">
+                            <option value="expense">支出</option>
+                            <option value="income">收入</option>
+                        </select>
+                    </label>
+                    <label>
+                        金額（日圓）
+                        <input id="expense-amount" type="number" inputmode="numeric" min="1" step="1" required>
+                    </label>
+                    <label>
+                        日期
+                        <input id="expense-date" type="date" required>
+                    </label>
+                    <label>
+                        類別
+                        <select id="expense-category">
+                            <option value="餐飲">餐飲</option>
+                            <option value="交通">交通</option>
+                            <option value="住宿">住宿</option>
+                            <option value="購物">購物</option>
+                            <option value="景點">景點</option>
+                            <option value="其他">其他</option>
+                        </select>
+                    </label>
+                </div>
+                <label class="expense-note-field">
+                    備註
+                    <input id="expense-note" type="text" maxlength="80" placeholder="例如：晚餐、地鐵、一蘭拉麵">
+                </label>
+                <button type="submit">新增紀錄</button>
+                <p id="expense-status" class="expense-status" role="status" aria-live="polite"></p>
+            </form>
+
+            <div class="expense-list-header">
+                <h3>紀錄清單</h3>
+                <button id="clear-expenses-button" type="button" disabled>清除全部</button>
+            </div>
+            <ul id="expense-list" class="expense-list"></ul>
+        </div>
+    </section>
+
     <nav class="page-navigation" aria-label="主要頁面">
         <button class="page-tab is-active" type="button" data-page="itinerary-page" aria-current="page">
             <span class="page-tab-icon" aria-hidden="true">🗓️</span>
@@ -244,6 +315,10 @@
         <button class="page-tab" type="button" data-page="draw-page">
             <span class="page-tab-icon" aria-hidden="true">🎲</span>
             <span>抽選吃什麼</span>
+        </button>
+        <button class="page-tab" type="button" data-page="expenses-page">
+            <span class="page-tab-icon" aria-hidden="true">💴</span>
+            <span>旅遊記帳</span>
         </button>
     </nav>
 

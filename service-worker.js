@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kansai-itinerary-v14';
+const CACHE_NAME = 'kansai-itinerary-v15';
 const APP_ASSETS = [
     './',
     './index.html',

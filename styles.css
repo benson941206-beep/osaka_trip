@@ -78,6 +78,45 @@ body {
     cursor: pointer;
 }
 
+.screen-refresh-button {
+    position: fixed;
+    z-index: 300;
+    right: 12px;
+    bottom: calc(82px + env(safe-area-inset-bottom));
+    display: grid;
+    width: 48px;
+    height: 48px;
+    place-items: center;
+    border: 1px solid rgba(29, 53, 87, 0.18);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.96);
+    color: var(--deep-color);
+    box-shadow: 0 8px 20px rgba(18, 50, 70, 0.22);
+    font-size: 1.45rem;
+    line-height: 1;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.screen-refresh-button:active {
+    transform: scale(0.94);
+}
+
+.screen-refresh-button:focus-visible {
+    outline: 3px solid var(--primary-color);
+    outline-offset: 3px;
+}
+
+.screen-refresh-button.is-refreshing span {
+    animation: screen-refresh-spin 700ms linear infinite;
+}
+
+@keyframes screen-refresh-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 .app-header {
     /* 標題區塊使用京都夜景，淡色遮罩讓標題保持清楚 */
     background:
@@ -315,6 +354,187 @@ body {
     padding: 6px 10px;
     background: #e6eef4;
     font-size: 0.78rem;
+}
+
+.expense-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.expense-summary div {
+    min-width: 0;
+    padding: 12px 8px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 14px;
+    background: rgba(245, 249, 252, 0.12);
+    color: #fff;
+    text-align: center;
+}
+
+.expense-summary span,
+.expense-summary strong {
+    display: block;
+}
+
+.expense-summary span {
+    margin-bottom: 3px;
+    color: rgba(245, 249, 252, 0.78);
+    font-size: 0.78rem;
+}
+
+.expense-summary strong {
+    overflow-wrap: anywhere;
+    font-size: clamp(0.88rem, 3.5vw, 1.05rem);
+}
+
+.expense-form {
+    padding: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 16px;
+    background: rgba(245, 249, 252, 0.1);
+}
+
+.expense-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.expense-form label {
+    display: grid;
+    gap: 5px;
+    color: #fff;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.expense-form input,
+.expense-form select {
+    width: 100%;
+    min-height: 46px;
+    padding: 8px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 10px;
+    background: var(--card-bg);
+    color: var(--deep-color);
+    font: inherit;
+}
+
+.expense-note-field {
+    margin-top: 10px;
+}
+
+.expense-form > button {
+    width: 100%;
+    min-height: 46px;
+    margin-top: 12px;
+    border: 0;
+    border-radius: 12px;
+    background: #fff;
+    color: var(--deep-color);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.expense-status {
+    min-height: 1.5em;
+    margin-top: 7px;
+    color: rgba(245, 249, 252, 0.88);
+    font-size: 0.82rem;
+}
+
+.expense-list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 18px 0 8px;
+    color: #fff;
+}
+
+.expense-list-header h3 {
+    font-size: 1rem;
+}
+
+.expense-list-header button {
+    min-height: 36px;
+    padding: 6px 10px;
+    border: 0;
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.88);
+    color: var(--deep-color);
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.expense-list-header button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.expense-list {
+    display: grid;
+    gap: 8px;
+    list-style: none;
+}
+
+.expense-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 13px;
+    background: var(--card-bg);
+}
+
+.expense-item-main {
+    min-width: 0;
+}
+
+.expense-item-main strong,
+.expense-item-main span {
+    display: block;
+}
+
+.expense-item-main strong {
+    color: var(--deep-color);
+    font-size: 0.92rem;
+}
+
+.expense-item-main span {
+    margin-top: 2px;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    overflow-wrap: anywhere;
+}
+
+.expense-item-amount {
+    color: #8a3030;
+    font-size: 0.92rem;
+    white-space: nowrap;
+}
+
+.expense-item.is-income .expense-item-amount {
+    color: #28705a;
+}
+
+.expense-remove {
+    min-height: 34px;
+    padding: 5px 8px;
+    border: 0;
+    border-radius: 8px;
+    background: #e6eef4;
+    color: var(--deep-color);
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight: 700;
+    cursor: pointer;
 }
 
 .food-list {
@@ -579,7 +799,7 @@ body {
     bottom: 0;
     left: 0;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
     border-top: 1px solid rgba(29, 53, 87, 0.15);
     background: rgba(245, 249, 252, 0.97);
@@ -1294,5 +1514,28 @@ body {
 
     .flight-meta {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 520px) {
+    .expense-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .expense-summary {
+        gap: 5px;
+    }
+
+    .expense-summary div {
+        padding-inline: 4px;
+    }
+
+    .expense-item {
+        grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .expense-remove {
+        grid-column: 1 / -1;
+        width: 100%;
     }
 }
