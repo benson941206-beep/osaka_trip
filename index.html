@@ -15,6 +15,10 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <aside id="pwa-update-banner" class="pwa-update-banner" role="status" aria-live="polite" hidden>
+        <span>已有新版本可更新</span>
+        <button id="pwa-update-button" type="button">立即更新</button>
+    </aside>
     <header class="app-header">
         <h1><img src="kansai-title.png" alt="關西漫遊之旅"></h1>
         <p class="subtitle">2027 冬季行程表</p>
@@ -39,6 +43,24 @@
                 <input id="food-search-input" type="search" placeholder="試試看：抹茶、和菓子、豬排、螃蟹" autocomplete="off">
                 <p id="food-search-status" class="food-search-status" role="status" aria-live="polite"></p>
             </div>
+
+            <form id="add-food-form" class="add-food-form">
+                <label for="add-food-link">新增 Google Maps 推薦</label>
+                <div class="add-food-fields">
+                    <input id="add-food-link" type="url" placeholder="貼上 Google Maps 連結" required>
+                    <button id="detect-food-link" type="button">辨識店家</button>
+                </div>
+                <div class="add-food-details">
+                    <label for="add-food-name">店名</label>
+                    <input id="add-food-name" type="text" placeholder="辨識後可自動填入">
+                    <label for="add-food-location">地點</label>
+                    <input id="add-food-location" type="text" placeholder="例如：京都・四條">
+                    <label for="add-food-description">介紹</label>
+                    <textarea id="add-food-description" rows="3" placeholder="店家特色、推薦餐點或旅遊備註"></textarea>
+                </div>
+                <button class="add-food-submit" type="submit">新增推薦</button>
+                <p id="add-food-status" class="add-food-status" role="status" aria-live="polite"></p>
+            </form>
 
             <div class="food-list">
                 <article class="food-card" data-search="抹茶 綠茶 茶飲">
@@ -181,25 +203,7 @@
                         <a class="food-map-link" href=https://maps.app.goo.gl/1UWcbAgKAE4dSYe48" target="_blank" rel="noopener noreferrer">查看地圖 <span aria-hidden="true">↗</span></a>
                     </div>
                 </article>
-                <article class="food-card" data-search="螃蟹 蟹 蟹料理 雪蟹 帝王蟹 塔拉巴蟹 吃到飽 海鮮 飲放題">
-                    <div class="food-icon" aria-hidden="true">🦀</div>
-                    <div class="food-card-content">
-                        <p class="food-location">大阪・梅田</p>
-                        <h3>大阪 かに蔵 梅田店</h3>
-                        <p>本雪蟹 8,000 円、大本雪蟹 10,000 円、帝王蟹（タラバガニ）16,000 円，全部含稅。想喝酒的話可以加購飲放題。</p>
-                        <a class="food-map-link" href=https://maps.app.goo.gl/ewMcZLEC76cUL6rX9" target="_blank" rel="noopener noreferrer">查看地圖 <span aria-hidden="true">↗</span></a>
-                    </div>
-                </article>
-                <article class="food-card" data-search="螃蟹 蟹 蟹料理 雪蟹 帝王蟹 塔拉巴蟹 吃到飽 海鮮 飲放題">
-                    <div class="food-icon" aria-hidden="true">🦀</div>
-                    <div class="food-card-content">
-                        <p class="food-location">大阪・梅田</p>
-                        <h3>大阪 かに蔵 梅田店</h3>
-                        <p>本雪蟹 8,000 円、大本雪蟹 10,000 円、帝王蟹（タラバガニ）16,000 円，全部含稅。想喝酒的話可以加購飲放題。</p>
-                        <a class="food-map-link" href=https://maps.app.goo.gl/ewMcZLEC76cUL6rX9" target="_blank" rel="noopener noreferrer">查看地圖 <span aria-hidden="true">↗</span></a>
-                    </div>
-                </article>
-
+                
                 
             </div>
             <p class="food-note">店家營業時間、分店資訊與候位狀況可能變動，出發前請先查看地圖確認。</p>
@@ -221,7 +225,10 @@
                 <button id="clear-food-selection" type="button" disabled>清除選取</button>
             </div>
             <p id="draw-status" class="draw-status" role="status" aria-live="polite"></p>
-            <div id="draw-result" class="draw-result"></div>
+            <div id="draw-stage" class="draw-stage">
+                <div id="draw-roller" class="draw-roller" aria-hidden="true"></div>
+                <div id="draw-result" class="draw-result"></div>
+            </div>
         </div>
     </section>
 

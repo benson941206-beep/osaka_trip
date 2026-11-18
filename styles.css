@@ -40,6 +40,44 @@ body {
     line-height: 1.6;
 }
 
+.pwa-update-banner {
+    position: fixed;
+    z-index: 500;
+    top: 12px;
+    left: 50%;
+    display: flex;
+    width: min(calc(100% - 24px), 420px);
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 10px 10px 14px;
+    border: 1px solid rgba(29, 53, 87, 0.18);
+    border-radius: 14px;
+    background: #fff;
+    color: var(--deep-color);
+    box-shadow: 0 10px 30px rgba(18, 50, 70, 0.24);
+    transform: translateX(-50%);
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+.pwa-update-banner[hidden] {
+    display: none;
+}
+
+.pwa-update-banner button {
+    min-height: 38px;
+    flex: 0 0 auto;
+    padding: 7px 12px;
+    border: 0;
+    border-radius: 10px;
+    background: var(--deep-color);
+    color: #fff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
 .app-header {
     /* 標題區塊使用京都夜景，淡色遮罩讓標題保持清楚 */
     background:
@@ -181,6 +219,102 @@ body {
     margin-top: 6px;
     color: rgba(245, 249, 252, 0.82);
     font-size: 0.86rem;
+}
+
+.add-food-form {
+    margin-bottom: 16px;
+    padding: 14px;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 16px;
+    background: rgba(245,249,252,0.1);
+}
+
+.add-food-form label {
+    display: block;
+    margin-bottom: 8px;
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.add-food-fields {
+    display: flex;
+    gap: 8px;
+}
+
+.add-food-fields input,
+.add-food-details input,
+.add-food-details textarea {
+    width: 100%;
+    min-height: 46px;
+    padding: 9px 12px;
+    border: 1px solid rgba(255,255,255,0.55);
+    border-radius: 12px;
+    background: var(--card-bg);
+    color: var(--deep-color);
+    font: inherit;
+}
+
+.add-food-fields input {
+    min-width: 0;
+    flex: 1;
+}
+
+.add-food-fields button,
+.custom-food-remove,
+.add-food-submit {
+    min-height: 46px;
+    border: 0;
+    border-radius: 12px;
+    background: var(--primary-color);
+    color: var(--deep-color);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.add-food-fields button {
+    padding: 9px 14px;
+}
+
+.add-food-details {
+    display: grid;
+    gap: 7px;
+    margin-top: 12px;
+}
+
+.add-food-details label {
+    margin: 4px 0 -2px;
+}
+
+.add-food-details textarea {
+    resize: vertical;
+}
+
+.add-food-submit {
+    width: 100%;
+    margin-top: 10px;
+    background: #fff;
+}
+
+.add-food-status {
+    min-height: 1.5em;
+    margin-top: 7px;
+    color: rgba(245,249,252,0.88);
+    font-size: 0.82rem;
+}
+
+.custom-food-card {
+    position: relative;
+}
+
+.custom-food-remove {
+    align-self: flex-start;
+    margin-left: auto;
+    min-height: 36px;
+    padding: 6px 10px;
+    background: #e6eef4;
+    font-size: 0.78rem;
 }
 
 .food-list {
@@ -345,6 +479,97 @@ body {
 
 .draw-result:empty {
     display: none;
+}
+
+.draw-stage {
+    position: relative;
+    min-height: 0;
+    margin-top: 14px;
+}
+
+.draw-roller {
+    display: none;
+    min-height: 76px;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.42);
+    border-radius: 16px;
+    background: rgba(245, 249, 252, 0.12);
+    color: #fff;
+    font-family: "Noto Serif TC", serif;
+    font-size: clamp(1.2rem, 5vw, 1.55rem);
+    font-weight: 900;
+    text-align: center;
+    box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.08);
+}
+
+.draw-stage.is-drawing .draw-roller {
+    display: flex;
+}
+
+.draw-roller.is-changing {
+    animation: draw-roller-pop 150ms ease-out;
+}
+
+.draw-winner {
+    animation: draw-winner-in 680ms cubic-bezier(0.18, 0.89, 0.32, 1.28) both;
+}
+
+.draw-confetti {
+    position: absolute;
+    top: 18px;
+    left: 50%;
+    width: 7px;
+    height: 12px;
+    border-radius: 2px;
+    background: var(--confetti-color);
+    pointer-events: none;
+    animation: draw-confetti-fall 1.15s var(--confetti-delay) ease-out both;
+}
+
+@keyframes draw-roller-pop {
+    0% {
+        opacity: 0.35;
+        transform: translateY(-8px) scale(0.96);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes draw-winner-in {
+    0% {
+        opacity: 0;
+        transform: translateY(24px) scale(0.86) rotateX(12deg);
+    }
+    55% {
+        opacity: 1;
+        transform: translateY(-5px) scale(1.03) rotateX(0);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes draw-confetti-fall {
+    0% {
+        opacity: 1;
+        transform: translate(0, 0) rotate(var(--confetti-rotate));
+    }
+    100% {
+        opacity: 0;
+        transform: translate(var(--confetti-x), 260px) rotate(calc(var(--confetti-rotate) + 540deg));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .draw-winner,
+    .draw-roller.is-changing {
+        animation: none;
+    }
 }
 
 .page-navigation {

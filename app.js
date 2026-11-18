@@ -611,7 +611,6 @@ function setupPageNavigation() {
 function setupFoodSearch() {
     const searchInput = document.getElementById('food-search-input');
     const status = document.getElementById('food-search-status');
-    const cards = Array.from(document.querySelectorAll('.food-card'));
 
     if (!searchInput || !status) {
         return;
@@ -623,6 +622,7 @@ function setupFoodSearch() {
             ? [keyword, '蟹', 'かに', 'カニ', 'crab']
             : [keyword];
         let visibleCount = 0;
+        const cards = Array.from(document.querySelectorAll('#food-page .food-card'));
 
         cards.forEach(card => {
             const cardText = `${card.textContent} ${card.dataset.search || ''}`.toLocaleLowerCase();
@@ -642,7 +642,6 @@ function setupFoodSearch() {
 }
 
 function setupFoodPicker() {
-    const cards = Array.from(document.querySelectorAll('#food-page .food-card'));
     const selectedCount = document.getElementById('draw-selection-count');
     const selectedList = document.getElementById('draw-selected-list');
     const drawButton = document.getElementById('draw-food-button');
@@ -654,7 +653,9 @@ function setupFoodPicker() {
         return;
     }
 
-    const getSelectedCards = () => cards.filter(card => card.querySelector('.food-select input').checked);
+    const getCards = () => Array.from(document.querySelectorAll('#food-page .food-card'));
+    const getSelectedCards = () => getCards()
+        .filter(card => card.querySelector('.food-select input')?.checked);
     const updateSelection = () => {
         const selectedCards = getSelectedCards();
         selectedCount.textContent = `目前選取 ${selectedCards.length} 間`;
@@ -671,21 +672,27 @@ function setupFoodPicker() {
         drawResult.replaceChildren();
     };
 
-    cards.forEach((card, index) => {
-        const label = document.createElement('label');
-        label.className = 'food-select';
-
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.setAttribute('aria-label', `將「${card.querySelector('h3').textContent.trim()}」加入抽選`);
-        checkbox.id = `food-choice-${index}`;
-        checkbox.addEventListener('change', updateSelection);
-
-        const labelText = document.createElement('span');
-        labelText.textContent = '想吃';
-        label.append(checkbox, labelText);
-        card.append(label);
-    });
+    const setupCardSelections = () => {
+        getCards().forEach((card, index) => {
+            if (card.querySelector('.food-select')) return;
+            const label = document.createElement('label');
+            label.className = 'food-select';
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.setAttribute('aria-label', `將「${card.querySelector('h3').textContent.trim()}」加入抽選`);
+            checkbox.id = `food-choice-${index}`;
+            checkbox.addEventListener('change', updateSelection);
+            const labelText = document.createElement('span');
+            labelText.textContent = '想吃';
+            label.append(checkbox, labelText);
+            card.append(label);
+        });
+    };
+    setupCardSelections();
+    window.refreshFoodSelections = () => {
+        setupCardSelections();
+        updateSelection();
+    };
 
     drawButton.addEventListener('click', () => {
         const selectedCards = getSelectedCards();
@@ -693,18 +700,280 @@ function setupFoodPicker() {
             return;
         }
 
-        const pickedCard = selectedCards[Math.floor(Math.random() * selectedCards.length)].cloneNode(true);
-        pickedCard.hidden = false;
-        pickedCard.querySelector('.food-select').remove();
-        drawResult.replaceChildren(pickedCard);
-        drawStatus.textContent = '抽選結果出爐！祝你用餐愉快。';
+        const drawStage = document.getElementById('draw-stage');
+        const drawRoller = document.getElementById('draw-roller');
+        if (!drawStage || !drawRoller) {
+            return;
+        }
+
+        const pickedCard = selectedCards[Math.floor(Math.random() * selectedCards.length)];
+        const pickedTitle = pickedCard.querySelector('h3').textContent.trim();
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const steps = reduceMotion ? 4 : 18;
+
+        drawButton.disabled = true;
+        clearButton.disabled = true;
+        drawResult.replaceChildren();
+        drawStage.classList.remove('is-revealing');
+        drawStage.classList.add('is-drawing');
+        drawStatus.textContent = '抽選中……';
+
+        let step = 0;
+        const shuffle = () => {
+            const candidate = selectedCards[Math.floor(Math.random() * selectedCards.length)];
+            const title = candidate.querySelector('h3').textContent.trim();
+            drawRoller.textContent = title;
+            drawRoller.classList.remove('is-changing');
+            void drawRoller.offsetWidth;
+            drawRoller.classList.add('is-changing');
+            step += 1;
+
+            if (step < steps) {
+                const delay = reduceMotion ? 80 : Math.round(55 + (step / steps) * 115);
+                window.setTimeout(shuffle, delay);
+                return;
+            }
+
+            drawRoller.textContent = pickedTitle;
+            window.setTimeout(() => {
+                const resultCard = pickedCard.cloneNode(true);
+                resultCard.hidden = false;
+                resultCard.querySelector('.food-select')?.remove();
+                resultCard.classList.add('draw-winner');
+                drawResult.replaceChildren(resultCard);
+
+                drawStage.classList.remove('is-drawing');
+                drawStage.classList.add('is-revealing');
+                drawStatus.textContent = '抽選結果出爐！祝你用餐愉快。';
+                drawButton.disabled = false;
+                clearButton.disabled = false;
+
+                if (!reduceMotion) {
+                    drawStage.querySelectorAll('.draw-confetti').forEach(confetti => confetti.remove());
+                    const colors = ['#DDEAF5', '#BFD7EA', '#91AEC1', '#FFFFFF', '#FFD166'];
+                    for (let i = 0; i < 28; i += 1) {
+                        const confetti = document.createElement('span');
+                        confetti.className = 'draw-confetti';
+                        confetti.style.setProperty('--confetti-x', `${-50 + Math.random() * 100}px`);
+                        confetti.style.setProperty('--confetti-delay', `${Math.random() * 0.25}s`);
+                        confetti.style.setProperty('--confetti-color', colors[i % colors.length]);
+                        confetti.style.setProperty('--confetti-rotate', `${Math.random() * 360}deg`);
+                        drawStage.append(confetti);
+                    }
+                }
+            }, reduceMotion ? 100 : 260);
+        };
+
+        shuffle();
     });
 
     clearButton.addEventListener('click', () => {
-        cards.forEach(card => {
-            card.querySelector('.food-select input').checked = false;
+        getCards().forEach(card => {
+            const checkbox = card.querySelector('.food-select input');
+            if (checkbox) checkbox.checked = false;
         });
         updateSelection();
+    });
+}
+
+const CUSTOM_FOOD_STORAGE_KEY = 'osaka-trip-custom-foods';
+
+function getCustomFoods() {
+    try {
+        const foods = JSON.parse(localStorage.getItem(CUSTOM_FOOD_STORAGE_KEY) || '[]');
+        return Array.isArray(foods) ? foods : [];
+    } catch {
+        return [];
+    }
+}
+
+function saveCustomFoods(foods) {
+    localStorage.setItem(CUSTOM_FOOD_STORAGE_KEY, JSON.stringify(foods));
+}
+
+function isGoogleMapsUrl(url) {
+    try {
+        const host = new URL(url).hostname.toLowerCase();
+        return host === 'maps.app.goo.gl' || host === 'goo.gl' ||
+            host.includes('google.') || host.includes('google.co');
+    } catch {
+        return false;
+    }
+}
+
+function cleanPlaceText(text) {
+    return text
+        .replace(/ - Google (Maps|マップ).*$/i, '')
+        .replace(/,+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
+function parsePlaceUrl(url) {
+    const parsed = new URL(url);
+    let name = '';
+    let location = '';
+    const placeMatch = parsed.pathname.match(/\/place\/([^/]+)/);
+    if (placeMatch) {
+        name = cleanPlaceText(decodeURIComponent(placeMatch[1]).replace(/\+/g, ' ').replace(/_/g, ' '));
+    }
+    const query = parsed.searchParams.get('q') || parsed.searchParams.get('query');
+    if (!name && query) {
+        name = cleanPlaceText(decodeURIComponent(query).replace(/\+/g, ' '));
+    }
+    if (!name) {
+        const searchMatch = parsed.pathname.match(/\/search\/([^/]+)/);
+        if (searchMatch) {
+            name = cleanPlaceText(decodeURIComponent(searchMatch[1]).replace(/\+/g, ' ').replace(/_/g, ' '));
+        }
+    }
+    if (query && name && query.includes(name)) {
+        location = cleanPlaceText(query.replace(name, '')).replace(/^[-・,\s]+/, '');
+    }
+    return {
+        name,
+        location,
+        description: name ? 'Google Maps 推薦店家，可補充店家特色或推薦餐點。' : ''
+    };
+}
+
+async function detectPlace(url) {
+    let place = parsePlaceUrl(url);
+    try {
+        const response = await fetch(url, {
+            redirect: 'follow',
+            headers: { Accept: 'text/html' }
+        });
+        if (!response.ok) return place;
+        const finalUrl = response.url;
+        if (finalUrl && finalUrl !== url) {
+            place = { ...place, ...parsePlaceUrl(finalUrl) };
+        }
+        const html = await response.text();
+        const titleMatch = html.match(/<title[^>]*>([^<]+)<\/title>/i);
+        if (titleMatch) {
+            const title = cleanPlaceText(titleMatch[1].replace(/&amp;/g, '&'));
+            if (title && title !== 'Google Maps') place.name = title;
+        }
+        const metaMatch = html.match(/<meta[^>]+(?:property|name)=["']og:description["'][^>]+content=["']([^"']+)/i);
+        if (metaMatch) place.description = cleanPlaceText(metaMatch[1].replace(/&amp;/g, '&'));
+    } catch {
+        // URL parsing remains available when Google blocks browser requests.
+    }
+    return place;
+}
+
+function createCustomFoodCard(food) {
+    const card = document.createElement('article');
+    card.className = 'food-card custom-food-card';
+    card.dataset.search = `自訂推薦 google maps ${food.location || ''} ${food.description || ''}`;
+
+    const icon = document.createElement('div');
+    icon.className = 'food-icon';
+    icon.setAttribute('aria-hidden', 'true');
+    icon.textContent = '📍';
+
+    const content = document.createElement('div');
+    content.className = 'food-card-content';
+    const location = document.createElement('p');
+    location.className = 'food-location';
+    location.textContent = food.location || '自行新增';
+    const title = document.createElement('h3');
+    title.textContent = food.name;
+    const description = document.createElement('p');
+    description.textContent = food.description || '使用者新增的 Google Maps 推薦。';
+    const mapLink = document.createElement('a');
+    mapLink.className = 'food-map-link';
+    mapLink.href = food.url;
+    mapLink.target = '_blank';
+    mapLink.rel = 'noopener noreferrer';
+    mapLink.append(document.createTextNode('查看地圖 '));
+    const arrow = document.createElement('span');
+    arrow.setAttribute('aria-hidden', 'true');
+    arrow.textContent = '↗';
+    mapLink.append(arrow);
+    content.append(location, title, description, mapLink);
+
+    const removeButton = document.createElement('button');
+    removeButton.type = 'button';
+    removeButton.className = 'custom-food-remove';
+    removeButton.textContent = '移除';
+    removeButton.addEventListener('click', () => {
+        saveCustomFoods(getCustomFoods().filter(item => item.url !== food.url));
+        card.remove();
+        window.refreshFoodSelections?.();
+    });
+
+    card.append(icon, content, removeButton);
+    return card;
+}
+
+function setupCustomFoods() {
+    const foodList = document.querySelector('#food-page .food-list');
+    const form = document.getElementById('add-food-form');
+    const linkInput = document.getElementById('add-food-link');
+    const detectButton = document.getElementById('detect-food-link');
+    const nameInput = document.getElementById('add-food-name');
+    const locationInput = document.getElementById('add-food-location');
+    const descriptionInput = document.getElementById('add-food-description');
+    const status = document.getElementById('add-food-status');
+    if (!foodList || !form || !linkInput || !detectButton ||
+        !nameInput || !locationInput || !descriptionInput || !status) return;
+
+    getCustomFoods().forEach(food => foodList.append(createCustomFoodCard(food)));
+
+    detectButton.addEventListener('click', async () => {
+        const url = linkInput.value.trim();
+        if (!isGoogleMapsUrl(url)) {
+            status.textContent = '請貼上 Google Maps 或 maps.app.goo.gl 的連結。';
+            linkInput.focus();
+            return;
+        }
+        detectButton.disabled = true;
+        status.textContent = '正在辨識店名與地點……';
+        const place = await detectPlace(url);
+        if (place.name) nameInput.value = place.name;
+        if (place.location) locationInput.value = place.location;
+        if (place.description) descriptionInput.value = place.description;
+        status.textContent = place.name
+            ? '已自動帶入可編輯資料，確認無誤後再新增。'
+            : '無法完整辨識，請手動填寫店名、地點與介紹。';
+        detectButton.disabled = false;
+    });
+
+    form.addEventListener('submit', event => {
+        event.preventDefault();
+        const url = linkInput.value.trim();
+        if (!isGoogleMapsUrl(url)) {
+            status.textContent = '請貼上 Google Maps 或 maps.app.goo.gl 的連結。';
+            return;
+        }
+        const name = nameInput.value.trim();
+        if (!name) {
+            status.textContent = '請填寫店名，或先按「辨識店家」。';
+            nameInput.focus();
+            return;
+        }
+        const foods = getCustomFoods();
+        if (foods.some(food => food.url === url)) {
+            status.textContent = '這個地點已經新增過了。';
+            return;
+        }
+        const food = {
+            name,
+            location: locationInput.value.trim(),
+            description: descriptionInput.value.trim(),
+            url
+        };
+        foods.push(food);
+        saveCustomFoods(foods);
+        foodList.append(createCustomFoodCard(food));
+        window.refreshFoodSelections?.();
+        linkInput.value = '';
+        nameInput.value = '';
+        locationInput.value = '';
+        descriptionInput.value = '';
+        status.textContent = `已新增「${name}」，也可以加入抽選。`;
     });
 }
 
@@ -712,6 +981,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderItinerary();
     setupPageNavigation();
     setupFoodSearch();
+    setupCustomFoods();
     setupFoodPicker();
 });
 
@@ -725,10 +995,10 @@ window.addEventListener('beforeinstallprompt', event => {
 
 window.addEventListener('appinstalled', () => {
     installPrompt = null;
-    installButton.hidden = true;
+    if (installButton) installButton.hidden = true;
 });
 
-installButton.addEventListener('click', async () => {
+installButton?.addEventListener('click', async () => {
     if (installPrompt) {
         const promptEvent = installPrompt;
         installPrompt = null;
@@ -756,9 +1026,48 @@ installButton.addEventListener('click', async () => {
 });
 
 if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./service-worker.js').catch(error => {
+    window.addEventListener('load', async () => {
+        try {
+            const registration = await navigator.serviceWorker.register('./service-worker.js');
+            registration.update();
+
+            registration.addEventListener('updatefound', () => {
+                const newWorker = registration.installing;
+                if (!newWorker) return;
+
+                newWorker.addEventListener('statechange', () => {
+                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                        const banner = document.getElementById('pwa-update-banner');
+                        if (banner) banner.hidden = false;
+                    }
+                });
+            });
+
+            navigator.serviceWorker.ready.then(() => {
+                if (registration.waiting) {
+                    const banner = document.getElementById('pwa-update-banner');
+                    if (banner) banner.hidden = false;
+                }
+            });
+
+            const updateButton = document.getElementById('pwa-update-button');
+            updateButton?.addEventListener('click', () => {
+                const waitingWorker = registration.waiting;
+                if (waitingWorker) {
+                    waitingWorker.postMessage({ type: 'SKIP_WAITING' });
+                } else {
+                    window.location.reload();
+                }
+            });
+
+            let refreshing = false;
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (refreshing) return;
+                refreshing = true;
+                window.location.reload();
+            });
+        } catch (error) {
             console.error('離線支援註冊失敗：', error);
-        });
+        }
     });
 }

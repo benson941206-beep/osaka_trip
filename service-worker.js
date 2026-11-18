@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kansai-itinerary-v13';
+const CACHE_NAME = 'kansai-itinerary-v14';
 const APP_ASSETS = [
     './',
     './index.html',
@@ -23,7 +23,6 @@ self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(cache => cache.addAll(APP_ASSETS))
-            .then(() => self.skipWaiting())
     );
 });
 
@@ -46,27 +45,31 @@ self.addEventListener('fetch', event => {
     }
 
     event.respondWith(
-        caches.match(request).then(cachedResponse => {
+        fetch(request).then(response => {
+            if (response.ok && response.type === 'basic') {
+                const responseCopy = response.clone();
+                event.waitUntil(
+                    caches.open(CACHE_NAME)
+                        .then(cache => cache.put(request, responseCopy))
+                        .catch(error => console.error('無法快取資源：', error))
+                );
+            }
+            return response;
+        }).catch(async () => {
+            const cachedResponse = await caches.match(request);
             if (cachedResponse) {
                 return cachedResponse;
             }
-
-            return fetch(request).then(response => {
-                if (response.ok && response.type === 'basic') {
-                    const responseCopy = response.clone();
-                    event.waitUntil(
-                        caches.open(CACHE_NAME)
-                            .then(cache => cache.put(request, responseCopy))
-                            .catch(error => console.error('無法快取資源：', error))
-                    );
-                }
-                return response;
-            }).catch(error => {
-                if (request.mode === 'navigate') {
-                    return caches.match('./index.html');
-                }
-                throw error;
-            });
+            if (request.mode === 'navigate') {
+                return caches.match('./index.html');
+            }
+            throw new Error('離線時找不到快取資源');
         })
     );
+});
+
+self.addEventListener('message', event => {
+    if (event.data?.type === 'SKIP_WAITING') {
+        self.skipWaiting();
+    }
 });
